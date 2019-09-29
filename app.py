@@ -66,18 +66,15 @@ def get_schools():
     schools = School.objects.aggregate(*pipeline)
     response = []
     for school in schools:
-        school_dict_item = {
+        temp = {
             'code': school['_id'],
             'name': school['name'],
             'longitude': school['location']['coordinates'][0],
             'latitude': school['location']['coordinates'][1],
-            'distance': school['distance'],
-            'street': school['street'],
-            'suburb': school['suburb'],
-            'postcode': school['postcode'],
-            'logo': school['logo']
+            'logo': school['logo'],
+            'distance': school['distance']
         }
-        response.append(school_dict_item)
+        response.append(temp)
     return jsonify(response), 200
 
 
@@ -95,10 +92,11 @@ def get_all_schools():
 
 @app.route('/api/schools/<int:code>', methods=['GET'])
 def get_school(code):
-    school = School.objects(code=code);
-    if len(school) == 0:
+    schools = School.objects(code=code);
+    if len(schools) == 0:
         return jsonify(message='No school found'), 404
     response = {}
+    school = schools.first();
     for key in school:
         response[key] = school[key];
     return jsonify(response), 200
@@ -122,4 +120,4 @@ def compare_schools():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

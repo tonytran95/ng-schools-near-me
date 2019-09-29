@@ -13,8 +13,23 @@ snmApp.controller('compareController', function($rootScope, $scope, $route, $htt
             console.log(error);
         });
 
-    $scope.removeSchool = (school) => {
-        $scope.schools.splice($scope.schools.indexOf(school), 1);
-        $rootScope.removeComparing(school);
-    };
+    $scope.$watch('schoolsToCompare', function(schools) {
+        if ($scope.schools) {
+            const schoolsLength = $scope.schools.length;
+            for (let i = 0; i < schoolsLength; i++) {
+                let found = false;
+                const tempLength = schools.length;
+                for (let j = 0; j < tempLength; j++) {
+                    if ($scope.schools[i].code === schools[j].code) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    $scope.schools.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }, true);
 });
