@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Schools Near Me</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-config" content="{{ url_for('static', filename='favicons/browserconfig.xml') }}">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicons/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicons/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicons/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ url_for('static', filename='favicons/site.webmanifest') }}">
+	<link rel="mask-icon" href="{{ url_for('static', filename='favicons/safari-pinned-tab.svg') }}" color="#5bbad5">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicons/favicon.ico') }}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body ng-app="snmApp">
+	{% raw %}
+	<header class="snm-navbar navbar navbar-expand navbar-dark bg-primary fixed-top">
+	    <a class="navbar-brand" href>
+	        <i class="fas fa-school fa-lg"></i>
+	    </a>
+	    <ul class="navbar-nav mr-auto">
+	        <li class="nav-item" ng-class="{ active: currentView == 'map' }">
+	            <a class="nav-link" ng-href="{{ (currentView != 'map') ? '#home' : '' }}">Home</a>
+	        </li>
+	        <li class="nav-item" ng-class="{ active: currentView == 'schools' }">
+	            <a class="nav-link" ng-href="{{ (currentView != 'schools') ? '#schools' : '' }}">Schools</a>
+	        </li>
+	    </ul>
+	    <span class="input-group-text snm-compare-counter">{{ schoolsToCompare.length }}</span>
+	    <button class="btn btn-light snm-btn-compare" data-toggle="modal" data-target="#compare-modal">
+	        Compare
+	    </button>
+	</header>
+	<ng-view></ng-view>
+	<div class="modal fade" id="compare-modal" tabindex="-1" role="dialog" aria-labelledby="compare-modal-label" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="compare-modal-label">Schools to compare</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				    	<span aria-hidden="true">&times;</span>
+			        </button>
+				</div>
+				<div class="modal-body">
+					<div class="school-compare-list-item" ng-repeat="school in schoolsToCompare">
+						<p>{{ school.name }}</p>
+						<button type="button" class="close" ng-click="removeComparing(school)">
+					    	<span aria-hidden="true">&otimes;</span>
+				        </button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<a class="btn btn-primary" href="#compare" onclick="$('#compare-modal').modal('hide')">Compare schools</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endraw %}
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/b137c5bf10.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/angular.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/angular-route.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/angular-cookies.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='views/map/map.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='views/schools/schools.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='views/profile/profile.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='views/compare/compare.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<div class="snm-container container-fluid">
+    <div class="row">
+        <div id="snm-school-list-loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xl-3 snm-school-list-sidebar">
+            <div class="snm-school-list-search">
+                <input class="form-control" type="text" placeholder="Search by name, suburb, postcode, etc..." ng-model="search.text">
+            </div>
+            <div class="snm-school-list-filter-list-toggler">
+                <button class="btn btn-link d-md-none p-0 collapsed" type="button" data-toggle="collapse" data-target="#snm-school-list-filter-list">
+                    <svg width="30" height="30" role="img" focusable="false">
+                        <title>Toggle Filters</title>
+                        <path d="M15.997 13.374l-7.081 7.081L7 18.54l8.997-8.998 9.003 9-1.916 1.916z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="snm-school-list-filter-list collapse" id="snm-school-list-filter-list">
+                <div class="snm-school-list-filters-item">
+                    <label class="snm-school-list-filters-item-label">Level of schooling</label>
+                    <select class="snm-list-filter-level form-control" ng-model="search.level">
+                        <option value>All levels of schooling</option>
+                        <option disabled>-----------------------------</option>
+                        <option>Primary School</option>
+                        <option>Secondary School</option>
+                        <option>Central/Community School</option>
+                        <option>Schools for Specific Purposes</option>
+                    </select>
+                </div>
+                <div class="snm-school-list-filters-item">
+                    <label class="snm-school-list-filters-item-label">Specialty Type</label>
+                    <select class="snm-list-filter-specialty form-control" ng-model="search.specialty_type">
+                        <option value selected>All specialty types</option>
+                        <optgroup label="Generalised">
+                            <option>Comprehensive</option>
+                            <option>Junior College</option>
+                            <option>Senior College</option>
+                        </optgroup>
+                        <optgroup label="Specialised">
+                            <option>Sports</option>
+                            <option>Technology</option>
+                            <option>Performing Arts</option>
+                            <option>Creative Arts</option>
+                            <option>Visual Arts</option>
+                            <option>Agricultural</option>
+                            <option>Marine Technology</option>
+                            <option>Rural Technology</option>
+                            <option>Language</option>
+                            <option>Intensive English</option>
+                            <option>Distance Education</option>
+                        </optgroup>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="snm-school-list-filters-item">
+                    <label class="snm-school-list-filters-item-label">Subtype</label>
+                    <select class="snm-list-filter-subtype form-control" ng-model="search.subtype">
+                        <option value selected>All subtypes</option>
+                        <optgroup label="Years">
+                            <option>Kinder to Year 2</option>
+                            <option>Kinder to Year 6</option>
+                            <option>Kinder to Year 12</option>
+                            <option>Year 7 to Year 9</option>
+                            <option>Year 7 to Year 10</option>
+                            <option>Year 7 to Year 12</option>
+                            <option>Year 10 to Year 12</option>
+                            <option>Year 11 to Year 12</option>
+                        </optgroup>
+                        <optgroup label="Support">
+                            <option>Medium / High Support needs</option>
+                            <option>Behaviour Disorder</option>
+                            <option>Debilitated by physical difficulties</option>
+                            <option>Diagnostic remedial reading assessment</option>
+                            <option>Emotional disturbance</option>
+                        </optgroup>
+                        <optgroup label="Others">
+                            <option>Environmental Education Centre (formerly Field Studies Centres)</option>
+                            <option>Hospital School</option>
+                            <option>Intensive English Centre</option>
+                            <option>Juvenile Justice establishment</option>
+                            <option>Nursery school (similar to a Pre school)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="snm-school-list-filters-item">
+                    <label class="snm-school-list-filters-item-label">Gender</label>
+                    <select class="snm-list-filter-subtype form-control" ng-model="search.gender">
+                        <option value selected>All genders</option>
+                        <option disabled>-----------</option>
+                        <option>Boys</option>
+                        <option>Girls</option>
+                        <option>Coed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8 col-xl-9 snm-school-list-content">
+            <div ng-if="limit > 0" class="snm-school-list-content-header">
+                <p>Showing {{ limit }} of {{ totalSchools }} schools</p>
+                <h6>Show <a href="javascript:void(0);" ng-click="increaseLimit()">20 more</a> | <a href="javascript:void(0);" ng-click="noLimit()">All</a></h6>
+            </div>
+            <div ng-if="limit == 0 && schoolsList.length != 0" class="snm-school-list-content-header">
+                <p>No schools found. Adjust your filters!</p>
+            </div>
+            <div class="row snm-school-list-card my-3 mx-0" ng-repeat="school in filtered | orderBy:'name' | limitTo:limit">
+                <div class="col-12 col-lg-4 snm-school-list-card-col1">
+                    <img ng-src="{{ school.logo }}" alt="{{ school.name }} logo">
+                    <p class="h5">{{ school.name }}</p>
+                    <p>{{ school.street }}, {{ school.suburb }}, {{ school.postcode }}</p>
+                    <a class="btn btn-primary snm-school-list-card-btn-website" href="{{ school.website }}" target="_blank"><i class="fas fa-globe"></i> Website</a>
+                </div>
+                <div class="col-12 col-lg-4 snm-school-list-card-col2">
+                    <p class="h6">Level of schooling</p>
+                    <p><i class="fas fa-school"></i> {{ school.level }}</p>
+                    <p class="h6">Specialty Type</p>
+                    <p><i class="fas fa-user-tag"></i> {{ school.specialty_type }}</p>
+                    <p class="h6">Subtype</p>
+                    <p><i class="fas fa-users"></i> {{ school.subtype }}</p>
+                    <p class="h6">Gender</p>
+                    <p><i class="fas fa-venus-mars"></i> {{ school.gender }}</p>
+                </div>
+                <div class="col-12 col-lg-4 snm-school-list-card-col3">
+                    <p class="h6">Phone</p>
+                    <p><i class="fas fa-phone"></i> {{ school.phone }}</p>
+                    <p class="h6">Email</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:{{ school.email }}">{{ school.email }}</a></p>
+                    <p class="h6">Fax</p>
+                    <p ng-if="school.fax"><i class="fas fa-fax"></i> {{ school.fax }}</p>
+                    <p ng-if="!school.fax"><i class="fas fa-fax"></i> N/A</p>
+                    <div class="snm-school-list-card-buttons">
+                        <a class="btn btn-primary snm-school-list-card-btn-profile" href="#schools/{{ school.code }}"><i class="fas fa-globe"></i> Profile</a>
+                        <a ng-if="!isComparing(school)" class="btn btn-primary snm-school-list-card-btn-compare" href="javascript:void(0);" ng-click="addComparing(school)"><i class="fas fa-bookmark"></i> Compare</a>
+                        <a ng-if="isComparing(school)" class="btn btn-danger snm-school-list-card-btn-compare" href="javascript:void(0);" ng-click="removeComparing(school)"><i class="fas fa-bookmark"></i> Compare</a>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="limit > 0" class="snm-school-list-content-footer">
+                <p>Showing {{ limit }} of {{ totalSchools }} schools</p>
+                <h6>Show <a href="javascript:void(0);" ng-click="increaseLimit()">20 more</a> | <a href="javascript:void(0);" ng-click="noLimit()">All</a></h6>
+            </div>
+        </div>
+    </div>
+</div>

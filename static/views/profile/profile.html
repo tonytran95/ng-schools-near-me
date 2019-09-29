@@ -1,0 +1,189 @@
+<div class="snm-container container-fluid">
+    <div id="snm-school-profile-loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <div class="row">
+        <div id="snm-school-map"></div>
+    </div>
+    <div ng-if="school">
+        <div class="row snm-school-heading">
+            <h4 align="center">{{ school.name }}</h4>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 snm-school-box">
+                <center><img class="snm-school-logo" ng-src="{{ school.logo }}" alt="{{ school.name }} logo"></center>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>School Information</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Level:</td>
+                            <td>{{ school.level }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td>{{ school.gender }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination={{ school.name }}" target="_blank">{{ school.street }}, {{ school.suburb }} NSW {{ school.postcode }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone:</td>
+                            <td>{{ school.phone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><a href="mailto:{{ school.email }}">{{ school.email }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Fax:</td>
+                            <td ng-if="school.fax">{{ school.fax }}</td>
+                            <td ng-if="!school.fax">N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Website:</td>
+                            <td><a href="{{ school.website }}" target="_blank">{{ school.website }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Specialty Type:</td>
+                            <td>{{ school.specialty_type }}</td>
+                        </tr>
+                        <tr>
+                            <td>Subtype:</td>
+                            <td>{{ school.subtype }}</td>
+                        </tr>
+                        <tr>
+                            <td>Enrolments:</td>
+                            <td ng-if="school.enrolments > 0">{{ school.enrolments }}</td>
+                            <td ng-if="school.enrolments == 0">No Data</td>
+                        </tr>
+                        <tr ng-if="school.level == 'Primary School'">
+                            <td>Opportunity Classes:</td>
+                            <td ng-if="school.opportunity_classes">Yes</td>
+                            <td ng-if="!school.opportunity_classes">No</td>
+                        </tr>
+                        <tr ng-if="school.level != 'Primary School'">
+                            <td>Selective:</td>
+                            <td>{{ school.selective }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nearest Train Station:</td>
+                            <td ng-if="school.train_station"><a href="https://www.google.com/maps/search/?api=1&query={{ school.train_station }}&query_place_id={{ school.train_station_id }}">{{ school.train_station }}</a> ({{ (school.train_duration / 60).toFixed(2) }} minute walk)</td>
+                            <td ng-if="!school.train_station">No Data</td>
+                        </tr>
+                        <tr>
+                            <td>Distance to Train Station:</td>
+                            <td ng-if="school.train_distance">{{ (school.train_distance / 1000).toFixed(2) }}km</td>
+                            <td ng-if="!school.train_distance">No Data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4 snm-school-box">
+                <table class="table table-striped" style="margin-top: 16px;">
+                    <thead>
+                        <tr>
+                            <th>School Statistics</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Attendance Rate:</td>
+                            <td ng-if="school.attendance_rate">{{ school.attendance_rate }}%</td>
+                            <td ng-if="!school.attendance_rate">No Data</td>
+                        </tr>
+                        <tr ng-if="school.opportunity_classes_entry_score">
+                            <td>Opportunity Classes Minimum Entry Score</td>
+                            <td>{{ school.opportunity_classes_entry_score }}</td>
+                        </tr>
+                        <tr ng-if="school.selective_entry_score">
+                            <td>Selective Minimum Entry Score</td>
+                            <td>{{ school.selective_entry_score }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="snm-student-stats">
+                    <p><b>Indigenous Students</b></p>
+                    <div id="indigenous-chart"></div>
+                </div>
+                <div class="snm-student-stats">
+                    <p><b>LBOTE Students</b> <small>(language backgrounds other than english)</small></p>
+                    <div id="lbote-chart"></div>
+                </div>
+            </div>
+            <div class="col-lg-4 snm-school-box">
+                <div class="snm-student-stats" style="margin-top: 16px;">
+                    <p><b>ICSEA Value</b> <small>(index of community socio-educational advantage)</small></p>
+                    <div id="icsea-chart"></div>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Support Classes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="school.support_classes.length == 0">
+                            <td>None</td>
+                        </tr>
+                        <tr ng-if="school.support_classes.length > 0" ng-repeat="class in school.support_classes">
+                            <td ng-if="class == 'MC'">Supporting students with a range of disabilities with similar support needs (MC Multi Categorical)</td>
+                            <td ng-if="class == 'IS'">Supporting students with severe intellectual disability (IS)</td>
+                            <td ng-if="class == 'IO/IS'">Supporting students with moderate and students with severe intellectual disability (IO/IS)</td>
+                            <td ng-if="class == 'IO'">Supporting students with moderate intellectual disability (IO)</td>
+                            <td ng-if="class == 'IM'">Supporting students with mild intellectual disability (IM)</td>
+                            <td ng-if="class == 'P'">Supporting students with physical disability (P)</td>
+                            <td ng-if="class == 'ED'">Supporting students with mental health issues (ED Emotional Disturbance)</td>
+                            <td ng-if="class == 'IO/Au'">Supporting students with autism and/or moderate intellectual disability (IO/Au)</td>
+                            <td ng-if="class == 'Au'">Supporting students with autism (Au)</td>
+                            <td ng-if="class == 'EI'">Supporting students with disability prior to school (EI Early Intervention)</td>
+                            <td ng-if="class == 'BD'">Supporting students with behavioural issues (BD)</td>
+                            <td ng-if="class == 'DB'">Supporting students who are Deaf/Blind (DB)</td>
+                            <td ng-if="class == 'H'">Supporting students who are deaf or hearing impaired (H)</td>
+                            <td ng-if="class == 'V'">Supporting students who are blind or vision impaired (V)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Other</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Intensive English Centre:</td>
+                            <td ng-if="school.intensive_english_centre">Yes</td>
+                            <td ng-if="!school.intensive_english_centre">No</td>
+                        </tr>
+                        <tr>
+                            <td>Healthy Canteen:</td>
+                            <td ng-if="school.healthy_canteen">Yes</td>
+                            <td ng-if="!school.healthy_canteen">No</td>
+                        </tr>
+                        <tr ng-if="school.level != 'Secondary School'">
+                            <td>Preschool:</td>
+                            <td ng-if="school.preschool">Yes</td>
+                            <td ng-if="!school.preschool">No</td>
+                        </tr>
+                        <tr>
+                            <td>Late Opening</td>
+                            <td ng-if="school.late_opening">Yes</td>
+                            <td ng-if="!school.late_opening">No</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

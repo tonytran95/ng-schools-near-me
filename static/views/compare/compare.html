@@ -1,0 +1,78 @@
+<div class="snm-container container-fluid">
+    <div class="row">
+        <div id="snm-school-compare-loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="col-12 col-md-6" ng-repeat="school in schools">
+            <div class="snm-school-list-card my-3">
+                <div class="row">
+                    <div class="col-12 col-xl-4 snm-school-list-card-col1">
+                        <img ng-src="{{ school.logo }}" alt="{{ school.name }} logo">
+                        <p class="h5">{{ school.name }}</p>
+                        <p>{{ school.street }}, {{ school.suburb }}, {{ school.postcode }}</p>
+                        <a class="btn btn-primary snm-school-list-card-btn-website" href="{{ school.website }}" target="_blank"><i class="fas fa-globe"></i> Website</a>
+                    </div>
+                    <div class="col-12 col-xl-4 snm-school-list-card-col2">
+                        <p class="h6">Level of schooling</p>
+                        <p><i class="fas fa-school"></i> {{ school.level }}</p>
+                        <p class="h6">Specialty Type</p>
+                        <p><i class="fas fa-user-tag"></i> {{ school.specialty_type }}</p>
+                        <p class="h6">Subtype</p>
+                        <p><i class="fas fa-users"></i> {{ school.subtype }}</p>
+                        <p class="h6">Gender</p>
+                        <p><i class="fas fa-venus-mars"></i> {{ school.gender }}</p>
+                        <p ng-if="school.level != 'Secondary School'"class="h6">Opportunity Classes</p>
+                        <p ng-if="school.level != 'Secondary School' && school.opportunity_classes"><i class="fas fa-plus-square"></i> Yes</p>
+                        <p ng-if="school.level != 'Secondary School' && !school.opportunity_classes"><i class="fas fa-plus-square"></i> No</p>
+                        <p ng-if="school.level != 'Primary School'" class="h6">Selective</p>
+                        <p ng-if="school.level != 'Primary School'"><i class="fas fa-plus-square"></i> {{ school.selective }}</p>
+                        <p class="h6">Late Opening</p>
+                        <p ng-if="school.late_opening"><i class="fas fa-moon"></i> Yes</p>
+                        <p ng-if="!school.late_opening"><i class="fas fa-moon"></i> No</p>
+                        <p class="h6">Preschool</p>
+                        <p ng-if="school.preschool"><i class="fas fa-child"></i> Yes</p>
+                        <p ng-if="!school.preschool"><i class="fas fa-child"></i> No</p>
+                        <p class="h6">Intensive English Centre</p>
+                        <p ng-if="school.intensive_english_centre"><i class="fas fa-book"></i> Yes</p>
+                        <p ng-if="!school.intensive_english_centre"><i class="fas fa-book"></i> No</p>
+                        <p class="h6">Healthy Canteen</p>
+                        <p ng-if="school.healthy_canteen"><i class="fas fa-apple-alt"></i> Yes</p>
+                        <p ng-if="!school.healthy_canteen"><i class="fas fa-apple-alt"></i> No</p>
+                    </div>
+                    <div class="col-12 col-xl-4 snm-school-list-card-col3">
+                        <p class="h6">Enrolments</p>
+                        <p ng-if="school.enrolments > 0"><i class="fas fa-users"></i> {{ school.enrolments }}</p>
+                        <p ng-if="school.enrolments == 0"><i class="fas fa-users"></i> No Data</p>
+                        <p class="h6">Attendance Rate</p>
+                        <p ng-if="school.attendance_rate"><i class="fas fa-user-tag"></i> {{ school.attendance_rate }}%</p>
+                        <p ng-if="!school.attendance_rate"><i class="fas fa-user-tag"></i> No Data</p>
+                        <p class="h6">Indigenous Students</p>
+                        <p ng-if="school.indigenous_pct != -1"><i class="fas fa-user-tag"></i> {{ school.indigenous_pct }}%</p>
+                        <p ng-if="school.indigenous_pct == -1"><i class="fas fa-user-tag"></i> No Data</p>
+                        <p class="h6">LBOTE Students</p>
+                        <p ng-if="school.lbote_pct != -1"><i class="fas fa-user-tag"></i> {{ school.lbote_pct }}%</p>
+                        <p ng-if="school.lbote_pct == -1"><i class="fas fa-user-tag"></i> No Data</p>
+                        <p class="h6">ICSEA Value</p>
+                        <p ng-if="school.icsea != -1"><i class="fas fa-user-tag"></i> {{ school.icsea }} </p>
+                        <p ng-if="school.icsea == -1"><i class="fas fa-user-tag"></i> No Data</p>
+                        <p class="h6">Nearest Train Station</p>
+                        <p ng-if="school.train_station"><i class="fas fa-train"></i> <a href="https://www.google.com/maps/search/?api=1&query={{ school.train_station }}&query_place_id={{ school.train_station_id }}">{{ school.train_station }}</a></p>
+                        <p ng-if="!school.train_station"><i class="fas fa-train"></i> No Data</p>
+                         <p class="h6">Walking Time to Train Station</p>
+                         <p ng-if="school.train_duration"><i class="fas fa-train"></i> {{ (school.train_duration / 60).toFixed(2) }} minute walk</p>
+                         <p ng-if="!school.train_duration"><i class="fas fa-train"></i> No Data</p>
+                        <p class="h6">Distance to Train Station</p>
+                        <p ng-if="school.train_distance"><i class="fas fa-train"></i> {{ (school.train_distance / 1000).toFixed(2) }}km</p>
+                        <p ng-if="!school.train_distance"><i class="fas fa-train"></i> No Data</p>
+                        <div class="snm-school-list-card-buttons">
+                            <a class="btn btn-primary snm-school-list-card-btn-profile" href="#schools/{{ school.code }}"><i class="fas fa-globe"></i> Profile</a>
+                            <a class="btn btn-danger snm-school-list-card-btn-compare" href="javascript:void(0);" ng-click="removeSchool(school)"><i class="fas fa-bookmark"></i> Remove</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

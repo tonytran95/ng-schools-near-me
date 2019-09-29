@@ -1,0 +1,122 @@
+<div class="snm-container container-fluid">
+    <div class="row" data-toggle="collapse" data-target="#snm-navbar-collapse.show">
+        <div class="snm-sidebar col-md-4 col-xl-3">
+            <div class="snm-search">
+                <input type="search" placeholder="Enter your address..." class="form-control" id="snm-search-bar" ng-model="data.text">
+                <button type="button" class="btn btn-primary" ng-click="search()" id="snm-search-button">
+                    Search
+                </button>
+            </div>
+            <div class="snm-filter-list-toggler">
+                <button class="btn btn-link d-md-none p-0 collapsed" type="button" data-toggle="collapse" data-target="#snm-filter-backdrop-collapse,#snm-filter-list-collapse">
+                    <svg width="30" height="30" role="img" focusable="false">
+                        <title>Toggle Filters</title>
+                        <path d="M15.997 13.374l-7.081 7.081L7 18.54l8.997-8.998 9.003 9-1.916 1.916z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="snm-filter-backdrop collapse no-transition" id="snm-filter-backdrop-collapse"></div>
+            <div class="snm-filter-list collapse no-transition" id="snm-filter-list-collapse">
+                <div class="snm-filter-item">
+                    <p><span class="snm-filter-item-label">Search Distance:</span> {{ data.distance }}km</p>
+                    <input type="range" class="custom-range" min="0" max="20" id="filter-distance" ng-model="data.distance">
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Level of schooling</p>
+                    <select class="form-control" id="filter-level" ng-model="data.level">
+                        <option value>All levels of schooling</option>
+                        <option disabled>-----------------------------</option>
+                        <option>Primary School</option>
+                        <option>Secondary School</option>
+                        <option>Central/Community School</option>
+                        <option>Schools for Specific Purposes</option>
+                    </select>
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Gender</p>
+                    <select class="form-control" id="filter-gender" ng-model="data.gender" ng-disabled="data.level == 'Primary School'">
+                        <option value>All genders</option>
+                        <option disabled>-----------</option>
+                        <option>Boys</option>
+                        <option>Girls</option>
+                        <option>Coed</option>
+                    </select>
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Opportunity Classes</p>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="opportunity-classes-checkbox" ng-model="data.opportunity_classes" ng-disabled="data.level == 'Secondary School'">
+                        <label class="custom-control-label" for="opportunity-classes-checkbox">Yes</label>
+                    </div>
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Selective</p>
+                    <select class="form-control" id="filter-selective" ng-model="data.selective" ng-disabled="data.level == 'Primary School'">
+                        <option value>All selective & non-selective schools</option>
+                        <option disabled>-------------------------------------</option>
+                        <option>Fully Selective</option>
+                        <option>Partially Selective</option>
+                        <option>Not Selective</option>
+                    </select>
+                </div>
+                <div class="snm-filter-item">
+                    <p><span class="snm-filter-item-label">Enrolments:</span> < {{ data.enrolments }} students</p>
+                    <input type="range" class="custom-range" min="0" max="2000" step="10" id="filter-enrolments" ng-model="data.enrolments">
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Support Classes</p>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="support-classes-checkbox" ng-model="data.support_classes_checked">
+                        <label class="custom-control-label" for="support-classes-checkbox">Supporting students:</label>
+                    </div>
+                    <select class="form-control" id="filter-support-classes" ng-disabled="!data.support_classes_checked" ng-model="data.support_classes_selected">
+                        <option value>All support classes</option>
+                        <option disabled>-------------------</option>
+                        <option value="MC">with a range of disabilities</option>
+                        <option value="IS">with severe intellectual disability</option>
+                        <option value="IO/IS">with moderate or severe intellectual disability</option>
+                        <option value="IO">with moderate intellectual disability</option>
+                        <option value="IM">with mild intellectual disability</option>
+                        <option value="P">with physical disability</option>
+                        <option value="ED">with mental health issues</option>
+                        <option value="IO/Au">with autism and/or moderate intellectual disability</option>
+                        <option value="Au">with autism</option>
+                        <option value="EI">with disability prior to school</option>
+                        <option value="BD">with behavioural issues</option>
+                        <option value="DB">who are Deaf/Blind</option>
+                        <option value="H">who are deaf or hearing impaired</option>
+                        <option value="V">who are blind or vision impaired</option>
+                    </select>
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Public Transport</p>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="train-station-checkbox" ng-model="data.train_station_checked">
+                        <label class="custom-control-label" for="train-station-checkbox">Train stations within: {{ data.train_station_duration }} minute walk</label>
+                    </div>
+                    <input type="range" class="custom-range" min="0" max="30" step="1" value="15" id="filter-train-station" ng-disabled="!data.train_station_checked" ng-model="data.train_station_duration">
+                </div>
+                <div class="snm-filter-item">
+                    <p class="snm-filter-item-label">Miscellaneous</p>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="preschool-checkbox" ng-model="data.preschool">
+                        <label class="custom-control-label" for="preschool-checkbox">Preschool</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="late-opening-checkbox" ng-model="data.late_opening">
+                        <label class="custom-control-label" for="late-opening-checkbox">Late Opening</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="intensive-english-centre-checkbox" ng-model="data.intensive_english_centre">
+                        <label class="custom-control-label" for="intensive-english-centre-checkbox">Intensive English Centre</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="healthy-canteen-checkbox" ng-model="data.healthy_canteen">
+                        <label class="custom-control-label" for="healthy-canteen-checkbox">Healthy Canteen</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="snm-map col-md-8 col-xl-9" id="map"></div>
+    </div>
+</div>
