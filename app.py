@@ -16,29 +16,9 @@ DATABASE_HOST = os.environ.get('DATABASE_HOST')
 connect(host=DATABASE_HOST)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html', api_key=API_KEY)
-
-
-@app.route('/schools')
-def school_list():
-    return render_template('school_list.html')
-
-
-@app.route('/schools/<int:code>')
-def school_page(code):
-    school = School.objects.get(code=code)
-    return render_template('school_profile.html', school=school, api_key=API_KEY)
-
-
-@app.route('/api/schools/<int:code>', methods=['GET'])
-def get_school(code):
-    school = School.objects.get(code=code);
-    response = {}
-    for key in school:
-        response[key] = school[key];
-    return jsonify(response)
 
 
 @app.route('/api/schools', methods=['GET'])
@@ -98,20 +78,7 @@ def get_schools():
             'logo': school['logo']
         }
         response.append(school_dict_item)
-    return jsonify(response)
-
-
-@app.route('/api/schools/compare', methods=['GET'])
-def compare_schools():
-    codes = request.args.getlist('code')
-    schools = School.objects(code__in=codes)
-    response = []
-    for school in schools:
-        temp = {}
-        for key in school:
-            temp[key] = school[key]
-        response.append(temp)
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 @app.route('/api/schools/all', methods=['GET'])
@@ -123,7 +90,35 @@ def get_all_schools():
         for key in school:
             temp[key] = school[key]
         response.append(temp)
-    return jsonify(response)
+    return jsonify(response), 200
+
+
+@app.route('/api/schools/<int:code>', methods=['GET'])
+def get_school(code):
+    school = School.objects(code=code);
+    if len(school) == 0:
+        return jsonify(message='No school found'), 404
+    response = {}
+    for key in school:
+        response[key] = school[key];
+    return jsonify(response), 200
+
+
+@app.route('/api/schools/compare', methods=['GET'])
+def compare_schools():
+    codes = request.args.getlist('code')
+    if len(codes) == 0:
+        return jsonify(message='No input'), 204
+    schools = School.objects(code__in=codes)
+    if len(schools) == 0:
+        return jsonify(message='No schools found matching the codes'), 404
+    response = []
+    for school in schools:
+        temp = {}
+        for key in school:
+            temp[key] = school[key]
+        response.append(temp)
+    return jsonify(response), 200
 
 
 if __name__ == '__main__':
