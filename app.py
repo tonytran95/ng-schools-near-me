@@ -31,8 +31,7 @@ def get_schools():
                     'coordinates': []
                 },
                 'spherical': True,
-                'distanceField': "distance",
-                'limit': 2207
+                'distanceField': "distance"
             }
         },
         {
