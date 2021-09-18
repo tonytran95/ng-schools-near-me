@@ -2,7 +2,7 @@ Flask==1.1.1
 Flask-Cors==3.0.8
 flask-talisman==0.7.0
 gunicorn==19.9.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 mongoengine==0.18.2
 python-dotenv==0.10.3
 dnspython==2.1.0
